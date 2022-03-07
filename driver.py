@@ -5,7 +5,7 @@ import copy
 maxWeight = 500
 
 def initialTemp():
-    #no idea how to initialize this
+    #how to initialize this
     T = 40000
     return T
 
@@ -42,8 +42,17 @@ def makeChange(listOfItems):
         copyList[changedItem][2] = 1
     elif copyList[changedItem][2] == 1:
         copyList[changedItem][2] = 0
-    # CHECK IF THIS CHANGE IMPROVES THE UTILITY/WHETHER TO MAKE THIS CHANGE
     # IF YES, listOfItems = copyList
+
+def checkChange():
+    # calc diff between old utility vs new/possible change
+    print('write some code')
+    '''
+    if change > 0:
+        makeChange()
+    elif change <= 0:
+
+    '''
 
 # RESEARCH BEST WAY TO REDUCE TEMP 
 # ALSO, WHAT TO DO WHEN TEMP IS == 0?
@@ -53,12 +62,7 @@ def tempReduction(attmeptCounter, changeCounter, temp):
     elif attmeptCounter == 40000:
         temp = (temp * 0.99)
 
-def stopTime():
-    if (attemptCounter == 40000) and (changeCounter == 0):
-        #time to stop
-        #maybe implement as a while loop in driver
-
-def driver():
+def main():
     changeCounter = 0
     attemptCounter = 0
     listOfItems = fileReader.formatInput()
@@ -66,4 +70,9 @@ def driver():
     initialUtility = calcUtility(listOfItems)
     initialWeight = calcWeight(listOfItems)
 
-driver()
+    while (attemptCounter != 40000) and (changeCounter != 0):
+        print('fill this in with the functions. E.g. makeChanges(), checkChanges(), tempReduction(), etc.')
+
+
+if __name__ == "__main__":
+  main()
