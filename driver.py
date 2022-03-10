@@ -1,3 +1,4 @@
+from pickle import FALSE, TRUE
 from numpy import diff
 import fileReader
 import random
@@ -18,6 +19,7 @@ def calcUtility(listOfItems):
             totalUtility += listOfItems[i][0]
     weight = calcWeight(listOfItems)
     totalUtility = overWeightCheck(listOfItems, totalUtility, weight)
+    print(totalUtility)
     return(totalUtility)
 
 def calcWeight(listOfItems):
@@ -50,6 +52,8 @@ def checkChange(initialList, copyList, temp):
     if (difference < 0) or (random.random() < probability):
         # check if this is the desired type of copy
         initialList = copyList
+        return TRUE
+    else: return FALSE
 
 # RESEARCH BEST WAY TO REDUCE TEMP 
 def tempReduction(attmeptCounter, changeCounter, temp):
@@ -66,7 +70,10 @@ def main():
     while (attemptCounter != 40000) and (changeCounter != 0):
         tempReduction(attemptCounter, changeCounter, temp)
         copyList = proposedChange(listOfItems)
-        checkChange(listOfItems, copyList, temp)
+        changeBool = checkChange(listOfItems, copyList, temp)
+        if(changeBool):
+            changeCounter += 1
+        attemptCounter += 1
 
 if __name__ == "__main__":
   main()
