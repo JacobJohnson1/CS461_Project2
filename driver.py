@@ -10,7 +10,7 @@ maxWeight = 500
 def initialSolution(listOfItems):
     numOfItems = 20
     for i in range(0, numOfItems):
-        listOfItems[random.randint(0, 400)][2] = 1
+        listOfItems[random.randint(0, len(listOfItems)-1)][2] = 1
 
 def calcUtility(listOfItems):
     totalUtility = 0.0
@@ -18,8 +18,9 @@ def calcUtility(listOfItems):
         if listOfItems[i][2] == 1:
             totalUtility += listOfItems[i][0]
     weight = calcWeight(listOfItems)
-    totalUtility = overWeightCheck(listOfItems, totalUtility, weight)
-    print(totalUtility)
+    totalUtility = overWeightCheck(totalUtility, weight)
+    print('total utility: %s' % totalUtility)
+
     return(totalUtility)
 
 def calcWeight(listOfItems):
@@ -37,7 +38,7 @@ def overWeightCheck(utility, weight):
 
 def proposedChange(listOfItems):
     copyList = copy.deepcopy(listOfItems)
-    changedItem = random.randint(0,400)
+    changedItem = random.randint(0, len(listOfItems)-1)
     if copyList[changedItem][2] == 0:
         copyList[changedItem][2] = 1
     elif copyList[changedItem][2] == 1:
@@ -52,8 +53,8 @@ def checkChange(initialList, copyList, temp):
     if (difference < 0) or (random.random() < probability):
         # check if this is the desired type of copy
         initialList = copyList
-        return TRUE
-    else: return FALSE
+        return True
+    else: return False
 
 # RESEARCH BEST WAY TO REDUCE TEMP 
 def tempReduction(attmeptCounter, changeCounter, temp):
@@ -67,13 +68,23 @@ def main():
     listOfItems = fileReader.formatInput()
     initialSolution(listOfItems)
 
-    while (attemptCounter != 40000) and (changeCounter != 0):
+    while True:
         tempReduction(attemptCounter, changeCounter, temp)
         copyList = proposedChange(listOfItems)
         changeBool = checkChange(listOfItems, copyList, temp)
         if(changeBool):
             changeCounter += 1
         attemptCounter += 1
+        if (attemptCounter == 40000) and (changeCounter == 0):
+            break
+
+    print('temp: %s' % temp)
+    print('changeCounter: %s' % changeCounter)
+    print('attemptCounter: %s' % attemptCounter)
 
 if __name__ == "__main__":
   main()
+
+'''
+total utility is in odd "loop" where every other iteration, the utility is 92.39999999999999
+'''
