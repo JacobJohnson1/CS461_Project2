@@ -20,6 +20,7 @@ def calcUtility(listOfItems):
     weight = calcWeight(listOfItems)
     totalUtility = overWeightCheck(totalUtility, weight)
     print('total utility: %s' % totalUtility)
+    printFunction(listOfItems)
 
     return(totalUtility)
 
@@ -61,6 +62,14 @@ def tempReduction(attmeptCounter, changeCounter, temp):
     if (changeCounter == 4000) or (attmeptCounter == 40000):
         temp = (temp * 0.99)
 
+def printFunction(listOfItems):
+    print('Packed in car:')
+    print('Utility \t Weight')
+    for i in range(0, len(listOfItems)-1):
+        if listOfItems[i][2] == 1:
+            print('%s \t\t %s' % (listOfItems[i][0], listOfItems[i][1]))
+
+
 def main():
     temp = 40000
     changeCounter = 0
@@ -77,10 +86,6 @@ def main():
         attemptCounter += 1
         if (attemptCounter == 40000) and (changeCounter == 0):
             break
-
-    print('temp: %s' % temp)
-    print('changeCounter: %s' % changeCounter)
-    print('attemptCounter: %s' % attemptCounter)
 
 if __name__ == "__main__":
   main()
