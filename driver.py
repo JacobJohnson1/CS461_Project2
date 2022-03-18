@@ -19,8 +19,8 @@ def calcUtility(listOfItems):
             totalUtility += listOfItems[i][0]
     weight = calcWeight(listOfItems)
     totalUtility = overWeightCheck(totalUtility, weight)
-    print('total utility: %s' % totalUtility)
-    printFunction(listOfItems)
+    #print('total utility: %s' % totalUtility)
+    #printFunction(listOfItems)
 
     return(totalUtility)
 
@@ -46,15 +46,18 @@ def proposedChange(listOfItems):
         copyList[changedItem][2] = 0
     return(copyList)
 
-#change isn't ever being taken
-#check this function for bugs
+#change IS being taken
+#lists not being copied correctly
 def checkChange(initialList, copyList, temp):
     initialUtility = calcUtility(initialList)
     copyUtility = calcUtility(copyList)
+    print('initiallist = %s' % initialUtility)
+    print('copylist = %s' % copyUtility)
     difference = (initialUtility - copyUtility)
     probability = exp(-difference / temp)
     if (difference < 0) or (random.random() < probability):
         initialList = copy.deepcopy(copyList)
+        print('change accepted!')
         return True
     else: return False
 
@@ -83,7 +86,6 @@ def main():
         changeBool = checkChange(listOfItems, copyList, temp)
         if(changeBool):
             changeCounter += 1
-            #listOfItems = copy.deepcopy(copyList)
         attemptCounter += 1
         if (attemptCounter == 40000) and (changeCounter == 0):
             break
