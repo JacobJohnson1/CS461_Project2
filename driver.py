@@ -46,14 +46,15 @@ def proposedChange(listOfItems):
         copyList[changedItem][2] = 0
     return(copyList)
 
+#change isn't ever being taken
+#check this function for bugs
 def checkChange(initialList, copyList, temp):
     initialUtility = calcUtility(initialList)
     copyUtility = calcUtility(copyList)
     difference = (initialUtility - copyUtility)
     probability = exp(-difference / temp)
     if (difference < 0) or (random.random() < probability):
-        # check if this is the desired type of copy
-        initialList = copyList
+        initialList = copy.deepcopy(copyList)
         return True
     else: return False
 
@@ -69,7 +70,6 @@ def printFunction(listOfItems):
         if listOfItems[i][2] == 1:
             print('%s \t\t %s' % (listOfItems[i][0], listOfItems[i][1]))
 
-
 def main():
     temp = 40000
     changeCounter = 0
@@ -83,13 +83,10 @@ def main():
         changeBool = checkChange(listOfItems, copyList, temp)
         if(changeBool):
             changeCounter += 1
+            #listOfItems = copy.deepcopy(copyList)
         attemptCounter += 1
         if (attemptCounter == 40000) and (changeCounter == 0):
             break
 
 if __name__ == "__main__":
   main()
-
-'''
-total utility is in odd "loop" where every other iteration, the utility is 92.39999999999999
-'''
