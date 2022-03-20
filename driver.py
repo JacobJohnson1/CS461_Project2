@@ -3,6 +3,7 @@ from numpy import diff
 import fileReader
 import random
 import copy
+import math
 from numpy import exp
 
 maxWeight = 500
@@ -19,9 +20,6 @@ def calcUtility(listOfItems):
             totalUtility += listOfItems[i][0]
     weight = calcWeight(listOfItems)
     totalUtility = overWeightCheck(totalUtility, weight)
-    #print('total utility: %s' % totalUtility)
-    #printFunction(listOfItems)
-
     return(totalUtility)
 
 def calcWeight(listOfItems):
@@ -39,55 +37,64 @@ def overWeightCheck(utility, weight):
 
 def proposedChange(listOfItems):
     copyList = copy.deepcopy(listOfItems)
-    changedItem = random.randint(0, len(listOfItems)-1)
-    if copyList[changedItem][2] == 0:
-        copyList[changedItem][2] = 1
-    elif copyList[changedItem][2] == 1:
-        copyList[changedItem][2] = 0
+    changedItemIndex = random.randint(0, len(listOfItems)-1)
+    if copyList[changedItemIndex][2] == 0:
+        copyList[changedItemIndex][2] = 1
+    elif copyList[changedItemIndex][2] == 1:
+        copyList[changedItemIndex][2] = 0
     return(copyList)
 
-#change IS being taken
-#lists not being copied correctly
 def checkChange(initialList, copyList, temp):
     initialUtility = calcUtility(initialList)
     copyUtility = calcUtility(copyList)
-    print('initiallist = %s' % initialUtility)
-    print('copylist = %s' % copyUtility)
+    # TEST
+    # print('initial utility: %s' % initialUtility)
+    # print('copy utility: %s' % copyUtility)
     difference = (initialUtility - copyUtility)
-    probability = exp(-difference / temp)
-    if (difference < 0) or (random.random() < probability):
+    probability = math.exp((-difference) / temp)
+    if (difference < 0) or (random.random() > probability):
         initialList = copy.deepcopy(copyList)
-        print('change accepted!')
+        # print('change occurred')
         return True
     else: return False
 
-# RESEARCH BEST WAY TO REDUCE TEMP 
-def tempReduction(attmeptCounter, changeCounter, temp):
+def tempReduction(attmeptCounter, changeCounter, temp, iterationCounter):
     if (changeCounter == 4000) or (attmeptCounter == 40000):
-        temp = (temp * 0.99)
+        temp = (temp * 0.9)
+        iterationCounter += 1
+        print('Attempts: %s\tChanges: %s\t Temperature: %s\tIterations: %s' % (attmeptCounter, changeCounter, temp, iterationCounter))
+        changeCounter = 0
+        attmeptCounter = 0
 
 def printFunction(listOfItems):
-    print('Packed in car:')
+    print('Final list of items packed in car:')
     print('Utility \t Weight')
     for i in range(0, len(listOfItems)-1):
         if listOfItems[i][2] == 1:
             print('%s \t\t %s' % (listOfItems[i][0], listOfItems[i][1]))
+    print('Total Utility: %s' % calcUtility(listOfItems))
+    print('Total Weight: %s' % calcWeight(listOfItems))
 
 def main():
-    temp = 40000
+    temp = 400
     changeCounter = 0
-    attemptCounter = 0
+    consecutiveAttemptCounter = 0
+    iterationCounter = 0
     listOfItems = fileReader.formatInput()
     initialSolution(listOfItems)
+    # printFunction(listOfItems)
 
     while True:
-        tempReduction(attemptCounter, changeCounter, temp)
         copyList = proposedChange(listOfItems)
+        # printFunction(listOfItems)
+        # printFunction(copyList)
         changeBool = checkChange(listOfItems, copyList, temp)
-        if(changeBool):
+        if(changeBool == True):
             changeCounter += 1
-        attemptCounter += 1
-        if (attemptCounter == 40000) and (changeCounter == 0):
+        consecutiveAttemptCounter += 1
+        tempReduction(consecutiveAttemptCounter, changeCounter, temp, iterationCounter)
+        if (consecutiveAttemptCounter == 40000) and (changeCounter == 0):
+            printFunction(listOfItems)
             break
 
 if __name__ == "__main__":
