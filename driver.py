@@ -49,8 +49,11 @@ def main():
     initialSolution(listOfItems)
 
     while True:
+        copyList = []
         copyList = proposedChange(listOfItems)
+
         changeBool = checkChange(listOfItems, copyList, temp)
+
         if changeBool: changeCounter += 1
         consecutiveAttemptCounter += 1
         if (consecutiveAttemptCounter == 40000) and (changeCounter == 0):
