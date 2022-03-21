@@ -22,6 +22,7 @@ and there haven't been any accepted.
 
 Within the while loop, we copy the initial solution & create a change 
 (in proposedChange()). The change is then checked in checkChange() & if it was accepted
-or not is stored in the changeBool.
-tempReduction is just a function to reduce the temperature & do some housekeeping with
-the counters.
+or not is stored in the changeBool. If an iteration completes (4000 changes or 40000 
+attempts), then we update all our counters & the temperature.
+If 40,000 change attempts occur without a single change, then we break out of the loop &
+accept the current solution as the final solution. 

@@ -56,9 +56,9 @@ def main():
         if (consecutiveAttemptCounter == 40000) and (changeCounter == 0):
             displayResults(listOfItems)
             break
-        # if (changeCounter == 4000) or (consecutiveAttemptCounter == 40000):
-        if (changeCounter == 400) or (consecutiveAttemptCounter == 4000):
-            print('Attempts: %d\tChanges: %d\t Temperature: %d\t Iterations: %d\t Current Utility: %d' % (consecutiveAttemptCounter, changeCounter, temp, iterationCounter, calculations.calcUtility(copyList)))
+        # if (consecutiveAttemptCounter == 40000) or (changeCounter == 4000):
+        if (consecutiveAttemptCounter == 4000) or (changeCounter == 400):
+            print('Attempts: %d\tChanges: %d\t Temperature: %d\t Iterations: %d\t Current Utility: %d' % (consecutiveAttemptCounter, changeCounter, temp, iterationCounter, calculations.calcUtility(listOfItems)))
             temp *= 0.9
             iterationCounter += 1
             changeCounter = 0
