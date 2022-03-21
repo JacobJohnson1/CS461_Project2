@@ -10,9 +10,11 @@ maxWeight = 500
 
 def calcUtility(listOfItems):
     totalUtility = 0.0
+    rawUtility = 0.0
     for i in range(0, len(listOfItems)):
         if listOfItems[i][2] == 1:
-            totalUtility += listOfItems[i][0]
+            rawUtility += listOfItems[i][0]
+    totalUtility = (1000 - rawUtility)
     weight = calcWeight(listOfItems)
     totalUtility = overWeightCheck(totalUtility, weight)
     return(totalUtility)
@@ -27,5 +29,5 @@ def calcWeight(listOfItems):
 def overWeightCheck(utility, weight):
     if weight > maxWeight:
         penalty = ((weight - maxWeight) * 20)
-        utility -= penalty
+        utility += penalty
     return utility
